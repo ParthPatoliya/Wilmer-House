@@ -12,6 +12,19 @@ const guests = [
 
 export default function GuestsPage() {
     const [showModal, setShowModal] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
+    const [guestEmail, setGuestEmail] = useState('');
+
+    const handleCreateReservation = (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsLoading(true);
+        // Simulate API call to send email and save to DB
+        setTimeout(() => {
+            setIsLoading(false);
+            setIsSuccess(true);
+        }, 1200);
+    };
 
     return (
         <div className="space-y-8 max-w-[1600px] mx-auto pb-10">
@@ -103,44 +116,120 @@ export default function GuestsPage() {
 
             {/* Modal for Creating Reservation */}
             {showModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-900/40 backdrop-blur-sm">
-                    <div className="bg-white rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] w-full max-w-lg overflow-hidden border border-zinc-200/50">
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-900/40 backdrop-blur-sm overflow-y-auto">
+                    <div className="bg-white rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] w-full max-w-2xl overflow-hidden border border-zinc-200/50 my-8">
                         <div className="p-6 border-b border-zinc-100 flex items-center justify-between bg-zinc-50/50">
                             <h2 className="text-xl font-bold text-zinc-900">Create Reservation</h2>
-                            <button onClick={() => setShowModal(false)} className="text-zinc-400 hover:text-zinc-700 transition-colors p-1 hover:bg-zinc-100 rounded-lg">
+                            <button onClick={() => setShowModal(false)} className="text-zinc-400 hover:text-zinc-700 transition-colors p-1 hover:bg-zinc-100 rounded-lg focus:outline-none">
                                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                             </button>
                         </div>
-                        <div className="p-6 space-y-5">
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-bold text-zinc-700 mb-1.5">Check In</label>
-                                    <input type="date" className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2.5 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm" />
+
+                        {isSuccess ? (
+                            <div className="p-12 flex flex-col items-center justify-center text-center">
+                                <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-4 shadow-sm border border-emerald-200">
+                                    <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                    </svg>
                                 </div>
-                                <div>
-                                    <label className="block text-sm font-bold text-zinc-700 mb-1.5">Check Out</label>
-                                    <input type="date" className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2.5 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm" />
+                                <h3 className="text-2xl font-bold text-zinc-900 mb-2">Reservation Confirmed!</h3>
+                                <p className="text-zinc-500 font-medium max-w-sm">
+                                    The guest details have been saved, and an email confirmation was sent automatically to <span className="text-zinc-900 font-bold">{guestEmail}</span>.
+                                </p>
+                                <button
+                                    onClick={() => {
+                                        setIsSuccess(false);
+                                        setShowModal(false);
+                                    }}
+                                    className="mt-8 bg-zinc-900 hover:bg-zinc-800 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all shadow-md py-3"
+                                >
+                                    Close Window
+                                </button>
+                            </div>
+                        ) : (
+                            <form onSubmit={handleCreateReservation}>
+                                <div className="p-6 space-y-5 max-h-[60vh] overflow-y-auto">
+
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-bold text-zinc-700 mb-1.5">Check In</label>
+                                            <input type="date" required className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2.5 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-bold text-zinc-700 mb-1.5">Check Out</label>
+                                            <input type="date" required className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2.5 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm" />
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-bold text-zinc-700 mb-1.5">First Name</label>
+                                            <input type="text" required placeholder="John" className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2.5 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm placeholder:text-zinc-400" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-bold text-zinc-700 mb-1.5">Last Name</label>
+                                            <input type="text" required placeholder="Doe" className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2.5 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm placeholder:text-zinc-400" />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div className="flex items-center justify-between mb-1.5">
+                                            <label className="block text-sm font-bold text-zinc-700">Email Address</label>
+                                            <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md">Auto-Send Enabled</span>
+                                        </div>
+                                        <input
+                                            type="email"
+                                            required
+                                            value={guestEmail}
+                                            onChange={(e) => setGuestEmail(e.target.value)}
+                                            placeholder="guest@example.com"
+                                            className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2.5 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm placeholder:text-zinc-400"
+                                        />
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-bold text-zinc-700 mb-1.5">Contact Number</label>
+                                            <input type="tel" required placeholder="+1 (555) 000-0000" className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2.5 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm placeholder:text-zinc-400" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-bold text-zinc-700 mb-1.5">Room Type</label>
+                                            <select required className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2.5 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm font-medium">
+                                                <option>Standard Room</option>
+                                                <option>Deluxe Suite</option>
+                                                <option>Penthouse</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-bold text-zinc-700 mb-1.5">Full Address</label>
+                                        <input type="text" required placeholder="123 Main St, Appt 4B, New York, NY 10001" className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2.5 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm placeholder:text-zinc-400" />
+                                    </div>
+
+                                    <div className="bg-indigo-50 border border-indigo-100/50 rounded-xl p-4 flex gap-3 items-start">
+                                        <div className="bg-white p-1.5 rounded-lg shadow-sm">
+                                            <svg className="w-5 h-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-bold text-indigo-900">ID Verification via Email</p>
+                                            <p className="text-xs text-indigo-700/80 font-medium mt-0.5">The guest will receive a secure link in their confirmation email to securely upload their ID verifying their identity.</p>
+                                        </div>
+                                    </div>
+
                                 </div>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-bold text-zinc-700 mb-1.5">Guest Name</label>
-                                <input type="text" placeholder="Select or type new guest..." className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2.5 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm placeholder:text-zinc-400" />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-bold text-zinc-700 mb-1.5">Room Type</label>
-                                <select className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2.5 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm">
-                                    <option>Standard Room</option>
-                                    <option>Deluxe Suite</option>
-                                    <option>Penthouse</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div className="p-6 bg-zinc-50 border-t border-zinc-100 flex items-center justify-end gap-3">
-                            <button onClick={() => setShowModal(false)} className="px-5 py-2.5 text-sm font-bold text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 rounded-xl transition-all">Cancel</button>
-                            <button onClick={() => setShowModal(false)} className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all shadow-md hover:shadow-lg">Confirm Booking</button>
-                        </div>
+                                <div className="p-6 bg-zinc-50 border-t border-zinc-100 flex items-center justify-end gap-3">
+                                    <button type="button" onClick={() => setShowModal(false)} className="px-5 py-2.5 text-sm font-bold text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 rounded-xl transition-all">Cancel</button>
+                                    <button type="submit" disabled={isLoading} className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all shadow-md hover:shadow-lg disabled:opacity-70 flex items-center gap-2">
+                                        {isLoading ? 'Processing...' : 'Confirm Book & Email'}
+                                    </button>
+                                </div>
+                            </form>
+                        )}
                     </div>
                 </div>
             )}

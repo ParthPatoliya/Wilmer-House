@@ -1,18 +1,30 @@
 'use client';
 
 import Link from 'next/link';
-import { Building2, ArrowRight } from 'lucide-react';
+import { Building2, ArrowRight, AlertCircle } from 'lucide-react';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
     const [isLoading, setIsLoading] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const router = useRouter();
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        setError('');
         setIsLoading(true);
         // Simulate login
         setTimeout(() => {
-            window.location.href = '/';
+            if (email === 'admin@luxehotel.com' && password === 'admin123') {
+                localStorage.setItem('isAuthenticated', 'true');
+                router.push('/');
+            } else {
+                setError('Invalid credentials. Hint: admin@luxehotel.com / admin123');
+                setIsLoading(false);
+            }
         }, 800);
     };
 
@@ -31,12 +43,21 @@ export default function LoginPage() {
                 <h1 className="text-2xl font-bold text-zinc-900 mb-2 tracking-tight text-center relative z-10">Welcome back</h1>
                 <p className="text-sm font-medium text-zinc-500 mb-8 text-center relative z-10">Enter your credentials to access the admin panel.</p>
 
+                {error && (
+                    <div className="mb-6 bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-2 relative z-10 shadow-sm">
+                        <AlertCircle className="w-5 h-5" />
+                        {error}
+                    </div>
+                )}
+
                 <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
                     <div>
                         <label className="block text-sm font-bold text-zinc-700 mb-2">Email Address</label>
                         <input
                             type="email"
                             required
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             placeholder="admin@luxehotel.com"
                             className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-zinc-900 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500/30 transition-all placeholder:text-zinc-400 font-medium font-sans shadow-sm"
                         />
@@ -49,6 +70,8 @@ export default function LoginPage() {
                         <input
                             type="password"
                             required
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             placeholder="••••••••"
                             className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-zinc-900 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500/30 transition-all placeholder:text-zinc-400 font-medium font-sans shadow-sm"
                         />

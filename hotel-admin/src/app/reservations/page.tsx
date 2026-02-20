@@ -1,11 +1,11 @@
 import { Calendar, Filter, Plus, Search, MoreHorizontal } from 'lucide-react';
 
 const reservations = [
-    { id: 'RES-001', guest: 'Alexandra Smith', room: 'Ocean View Suite (102)', dates: 'Oct 12 - Oct 15', status: 'Confirmed', amount: '$850' },
-    { id: 'RES-002', guest: 'David Johnson', room: 'Standard Double (205)', dates: 'Oct 14 - Oct 18', status: 'Checked In', amount: '$420' },
-    { id: 'RES-003', guest: 'Emily Chen', room: 'Penthouse (501)', dates: 'Oct 20 - Oct 25', status: 'Pending', amount: '$2,500' },
-    { id: 'RES-004', guest: 'Michael Brown', room: 'Deluxe Single (310)', dates: 'Oct 11 - Oct 13', status: 'Checked Out', amount: '$300' },
-    { id: 'RES-005', guest: 'Sarah Williams', room: 'Ocean View Suite (104)', dates: 'Oct 15 - Oct 20', status: 'Confirmed', amount: '$1,200' },
+    { id: 'RES-001', guest: 'Alexandra Smith', room: 'Ocean View Suite (102)', dates: 'Oct 12 - Oct 15', status: 'Confirmed', amount: '£850' },
+    { id: 'RES-002', guest: 'David Johnson', room: 'Standard Double (205)', dates: 'Oct 14 - Oct 18', status: 'Checked In', amount: '£420' },
+    { id: 'RES-003', guest: 'Emily Chen', room: 'Penthouse (501)', dates: 'Oct 20 - Oct 25', status: 'Pending', amount: '£2,500' },
+    { id: 'RES-004', guest: 'Michael Brown', room: 'Deluxe Single (310)', dates: 'Oct 11 - Oct 13', status: 'Checked Out', amount: '£300' },
+    { id: 'RES-005', guest: 'Sarah Williams', room: 'Ocean View Suite (104)', dates: 'Oct 15 - Oct 20', status: 'Confirmed', amount: '£1,200' },
 ];
 
 const getStatusColor = (status: string) => {

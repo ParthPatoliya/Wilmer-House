@@ -72,7 +72,7 @@ export default function RoomsPage() {
                                         </div>
                                     </td>
                                     <td className="px-6 py-5">
-                                        <div className="font-bold text-zinc-700">${room.price}<span className="text-zinc-400 text-xs font-medium">/night</span></div>
+                                        <div className="font-bold text-zinc-700">£{room.price}<span className="text-zinc-400 text-xs font-medium">/night</span></div>
                                     </td>
                                     <td className="px-6 py-5">
                                         <div className="flex items-center gap-2">
@@ -87,9 +87,9 @@ export default function RoomsPage() {
                                     </td>
                                     <td className="px-6 py-5">
                                         <span className={`px-3 py-1 rounded-full text-xs font-bold border ${room.status === 'Available' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
-                                                room.status === 'Occupied' ? 'bg-indigo-50 text-indigo-700 border-indigo-200' :
-                                                    room.status === 'Cleaning' ? 'bg-amber-50 text-amber-700 border-amber-200' :
-                                                        'bg-rose-50 text-rose-700 border-rose-200'
+                                            room.status === 'Occupied' ? 'bg-indigo-50 text-indigo-700 border-indigo-200' :
+                                                room.status === 'Cleaning' ? 'bg-amber-50 text-amber-700 border-amber-200' :
+                                                    'bg-rose-50 text-rose-700 border-rose-200'
                                             }`}>
                                             {room.status}
                                         </span>
@@ -139,7 +139,7 @@ export default function RoomsPage() {
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-bold text-zinc-700 mb-1.5">Base Price ($)</label>
+                                    <label className="block text-sm font-bold text-zinc-700 mb-1.5">Base Price (£)</label>
                                     <input type="number" placeholder="150" className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2.5 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm placeholder:text-zinc-400" />
                                 </div>
                             </div>

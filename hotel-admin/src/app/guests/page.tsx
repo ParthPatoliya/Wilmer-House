@@ -10,6 +10,23 @@ const guests = [
     { id: 4, name: 'David Smith', email: 'd.smith@example.com', phone: '+1 (555) 456-7890', lastStay: '2023-09-08', totalStays: 2, status: 'Inactive' },
 ];
 
+const calendarDays = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() + i);
+    return {
+        date: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        day: d.toLocaleDateString('en-US', { weekday: 'short' }),
+        fullDate: d.toISOString().split('T')[0]
+    };
+});
+
+const roomsForCalendar = [
+    { name: 'Standard 210', bookings: [{ startOffset: 0, length: 3, status: 'Confirmed', guest: 'Michael Chen' }] },
+    { name: 'Deluxe Suite 402', bookings: [{ startOffset: 2, length: 4, status: 'VIP', guest: 'Sarah Jenkins' }] },
+    { name: 'Penthouse', bookings: [{ startOffset: 1, length: 2, status: 'Pending', guest: 'Emma Watson' }] },
+    { name: 'Standard 105', bookings: [] },
+];
+
 export default function GuestsPage() {
     const [showModal, setShowModal] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -45,6 +62,49 @@ export default function GuestsPage() {
                     >
                         <Plus className="w-4 h-4" /> Create Reservation
                     </button>
+                </div>
+            </div>
+
+            {/* Calendar View Container */}
+            <div className="bg-white border border-zinc-200/60 rounded-2xl shadow-[0_4px_24px_-8px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col">
+                <div className="p-4 border-b border-zinc-100 flex items-center justify-between bg-zinc-50/50">
+                    <h2 className="text-lg font-bold text-zinc-900 flex items-center gap-2"><Calendar className="w-5 h-5" /> Booking Calendar</h2>
+                </div>
+                <div className="overflow-x-auto p-4">
+                    <div className="min-w-[800px]">
+                        <div className="grid grid-cols-[150px_repeat(7,1fr)] gap-2 mb-2">
+                            <div className="font-bold text-sm text-zinc-500 self-end pb-2">Room</div>
+                            {calendarDays.map(d => (
+                                <div key={d.date} className="text-center font-bold text-sm text-zinc-700 bg-zinc-50 rounded-lg py-2 cursor-pointer hover:bg-zinc-100 transition-colors" onClick={() => setShowModal(true)}>
+                                    <div className="text-xs text-zinc-400 font-medium">{d.day}</div>
+                                    {d.date}
+                                </div>
+                            ))}
+                        </div>
+                        {roomsForCalendar.map(room => (
+                            <div key={room.name} className="grid grid-cols-[150px_repeat(7,1fr)] gap-2 mb-2 items-center group relative">
+                                <div className="font-bold text-sm text-zinc-800">{room.name}</div>
+                                {Array.from({ length: 7 }, (_, i) => {
+                                    const booking = room.bookings.find(b => b.startOffset === i);
+                                    if (booking) {
+                                        return (
+                                            <div key={i} style={{ gridColumn: `span ${booking.length}` }} className={`relative h-10 rounded-xl px-3 flex items-center text-xs font-bold text-white shadow-sm cursor-pointer hover:opacity-90 transition-opacity ${booking.status === 'Confirmed' ? 'bg-emerald-500' : booking.status === 'VIP' ? 'bg-indigo-500' : 'bg-amber-500'}`}>
+                                                {booking.guest} - {booking.status}
+                                            </div>
+                                        );
+                                    }
+                                    const isCovered = room.bookings.some(b => i >= b.startOffset && i < b.startOffset + b.length);
+                                    if (isCovered) return null;
+
+                                    return (
+                                        <div key={i} onClick={() => setShowModal(true)} className="h-10 border border-dashed border-zinc-200 rounded-xl hover:bg-zinc-50 cursor-pointer transition-colors flex items-center justify-center hover:border-indigo-300 group-hover:border-zinc-300">
+                                            <Plus className="w-4 h-4 text-indigo-400 opacity-0 hover:opacity-100" />
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
 

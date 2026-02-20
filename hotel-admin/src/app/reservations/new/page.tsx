@@ -96,15 +96,15 @@ export default function NewReservationPage() {
                         <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
                             <div className="flex justify-between items-center mb-2">
                                 <span className="text-sm text-slate-600">Subtotal</span>
-                                <span className="text-sm font-medium text-slate-900">$0.00</span>
+                                <span className="text-sm font-medium text-slate-900">£0.00</span>
                             </div>
                             <div className="flex justify-between items-center mb-4">
                                 <span className="text-sm text-slate-600">Taxes & Fees</span>
-                                <span className="text-sm font-medium text-slate-900">$0.00</span>
+                                <span className="text-sm font-medium text-slate-900">£0.00</span>
                             </div>
                             <div className="border-t border-slate-200 pt-3 flex justify-between items-center">
                                 <span className="font-semibold text-slate-900">Total Estimated Cost</span>
-                                <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-indigo-700">$0.00</span>
+                                <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-indigo-700">£0.00</span>
                             </div>
                         </div>
                     </div>

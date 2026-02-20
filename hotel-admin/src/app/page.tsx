@@ -1,7 +1,7 @@
 import { TrendingUp, Users, CheckCircle, Clock, ChevronRight } from 'lucide-react';
 
 const stats = [
-  { name: 'Total Revenue', value: '$45,231', change: '+20.1%', icon: TrendingUp, color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
+  { name: 'Total Revenue', value: '£45,231', change: '+20.1%', icon: TrendingUp, color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
   { name: 'Active Guests', value: '142', change: '+12.5%', icon: Users, color: 'text-indigo-500', bg: 'bg-indigo-500/10' },
   { name: 'Rooms Cleaned', value: '45/60', change: '75%', icon: CheckCircle, color: 'text-amber-500', bg: 'bg-amber-500/10' },
   { name: 'Pending Requests', value: '12', change: '-2.4%', icon: Clock, color: 'text-rose-500', bg: 'bg-rose-500/10' },
@@ -66,10 +66,10 @@ export default function Home() {
               </thead>
               <tbody className="text-sm">
                 {[
-                  { name: 'Sarah Jenkins', room: 'Deluxe Suite 402', status: 'Confirmed', amount: '$450.00', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
-                  { name: 'Michael Chen', room: 'Standard 210', status: 'Pending', amount: '$120.00', color: 'bg-amber-50 text-amber-700 border-amber-200' },
-                  { name: 'Emma Watson', room: 'Penthouse', status: 'Checked In', amount: '$1,200.00', color: 'bg-indigo-50 text-indigo-700 border-indigo-200' },
-                  { name: 'David Smith', room: 'Standard 105', status: 'Confirmed', amount: '$150.00', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
+                  { name: 'Sarah Jenkins', room: 'Deluxe Suite 402', status: 'Confirmed', amount: '£450.00', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
+                  { name: 'Michael Chen', room: 'Standard 210', status: 'Pending', amount: '£120.00', color: 'bg-amber-50 text-amber-700 border-amber-200' },
+                  { name: 'Emma Watson', room: 'Penthouse', status: 'Checked In', amount: '£1,200.00', color: 'bg-indigo-50 text-indigo-700 border-indigo-200' },
+                  { name: 'David Smith', room: 'Standard 105', status: 'Confirmed', amount: '£150.00', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
                 ].map((row, i) => (
                   <tr key={i} className="border-b border-zinc-100/50 last:border-0 hover:bg-zinc-50/80 transition-colors group">
                     <td className="px-6 py-5 font-semibold text-zinc-900">{row.name}</td>

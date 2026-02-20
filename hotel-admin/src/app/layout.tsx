@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import Sidebar from '@/components/Sidebar';
-import Header from '@/components/Header';
+import { Analytics } from "@vercel/analytics/next"
+import NavigationWrapper from '@/components/NavigationWrapper';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,16 +18,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-slate-50 text-slate-900 antialiased`}>
-        <div className="flex h-screen overflow-hidden">
-          <Sidebar />
-          <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
-            <Header />
-            <main className="w-full grow p-6">
-              {children}
-            </main>
-          </div>
-        </div>
+      <body className={`${inter.className} bg-zinc-50 text-zinc-900 antialiased selection:bg-indigo-500/30`}>
+        <NavigationWrapper>
+          {children}
+        </NavigationWrapper>
+        <Analytics />
       </body>
     </html>
   );

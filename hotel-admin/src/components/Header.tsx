@@ -6,55 +6,57 @@ export default function Header() {
     const [showProfile, setShowProfile] = useState(false);
 
     return (
-        <header className="h-16 flex items-center justify-between px-6 bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-10 shadow-sm">
+        <header className="h-[76px] flex items-center justify-between px-8 bg-white/70 backdrop-blur-xl sticky top-0 z-20 transition-all border-b border-zinc-200/50 shadow-[0_4px_30px_rgba(0,0,0,0.03)]">
             <div className="flex-1 flex items-center">
-                <form className="relative w-full max-w-md hidden sm:block">
-                    <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <form className="relative w-full max-w-lg hidden sm:block">
+                    <Search className="w-4 h-4 text-zinc-400 absolute left-4 top-1/2 -translate-y-1/2" />
                     <input
                         type="search"
-                        placeholder="Search guests, rooms, queries..."
-                        className="w-full bg-slate-100/50 text-sm rounded-full pl-10 pr-4 py-2 border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-medium placeholder:text-slate-400 text-slate-700"
+                        placeholder="Search guests, rooms, reports..."
+                        className="w-full bg-zinc-100/50 hover:bg-zinc-100 focus:bg-white text-sm rounded-2xl pl-11 pr-4 py-2.5 border border-transparent focus:border-indigo-500/30 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 transition-all font-medium placeholder:text-zinc-400 text-zinc-700 shadow-sm"
                     />
                 </form>
             </div>
 
-            <div className="flex items-center gap-4 relative">
-                <button className="relative p-2 rounded-full hover:bg-slate-100 transition-colors text-slate-600">
+            <div className="flex items-center gap-5 relative">
+                <button className="relative p-2.5 rounded-full hover:bg-zinc-100 transition-colors text-zinc-500 hover:text-zinc-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
                     <Bell className="w-5 h-5" />
-                    <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-rose-500 border border-white"></span>
+                    <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-rose-500 border-2 border-white shadow-sm"></span>
                 </button>
+
+                <div className="h-8 w-[1px] bg-zinc-200"></div>
 
                 <div className="relative">
                     <button
                         onClick={() => setShowProfile(!showProfile)}
-                        className="flex items-center gap-2 p-1 pl-3 pr-1 rounded-full hover:bg-slate-100 transition-all border border-transparent hover:border-slate-200 focus:outline-none focus:bg-slate-100"
+                        className="flex items-center gap-3 p-1 pl-4 pr-1.5 rounded-full hover:bg-zinc-100/80 transition-all border border-transparent focus:outline-none"
                     >
                         <div className="flex flex-col text-right hidden sm:flex">
-                            <span className="text-sm font-semibold text-slate-700 leading-none">Admin</span>
-                            <span className="text-xs text-slate-500 mt-1">Manager</span>
+                            <span className="text-sm font-bold text-zinc-800 leading-none">Admin User</span>
+                            <span className="text-xs font-medium text-zinc-500 mt-1">General Manager</span>
                         </div>
                         <img
                             src="https://api.dicebear.com/7.x/notionists/svg?seed=Felix&backgroundColor=e2e8f0"
                             alt="Profile avatar"
-                            className="w-8 h-8 rounded-full bg-slate-200 object-cover ring-2 ring-white shadow-sm"
+                            className="w-9 h-9 rounded-full bg-zinc-200 object-cover ring-2 ring-white shadow-md"
                         />
                     </button>
 
                     {showProfile && (
-                        <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-slate-200 rounded-xl shadow-xl py-1 z-50 overflow-hidden transform opacity-100 scale-100 transition-all origin-top-right">
+                        <div className="absolute right-0 top-[calc(100%+8px)] w-56 bg-white border border-zinc-200/60 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] py-2 z-50 overflow-hidden transform opacity-100 scale-100 transition-all origin-top-right backdrop-blur-xl">
                             <button
                                 onClick={() => setShowProfile(false)}
-                                className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+                                className="w-full text-left px-5 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50 hover:text-indigo-600 flex items-center gap-3 transition-colors"
                             >
-                                <UserCircle className="w-4 h-4 text-slate-400" />
+                                <UserCircle className="w-4 h-4" />
                                 My Profile
                             </button>
-                            <div className="border-t border-slate-100 my-1"></div>
+                            <div className="border-t border-zinc-100 my-1"></div>
                             <button
                                 onClick={() => setShowProfile(false)}
-                                className="w-full text-left px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 flex items-center gap-2 font-medium"
+                                className="w-full text-left px-5 py-2.5 text-sm font-medium text-rose-600 hover:bg-rose-50 flex items-center gap-3 transition-colors"
                             >
-                                <LogOut className="w-4 h-4 text-rose-500" />
+                                <LogOut className="w-4 h-4" />
                                 Sign Out
                             </button>
                         </div>

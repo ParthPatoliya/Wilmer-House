@@ -10,7 +10,7 @@ const guests = [
     { id: 4, name: 'David Smith', email: 'd.smith@example.com', phone: '+1 (555) 456-7890', lastStay: '2023-09-08', totalStays: 2, status: 'Inactive' },
 ];
 
-const calendarDays = Array.from({ length: 7 }, (_, i) => {
+const calendarDays = Array.from({ length: 14 }, (_, i) => {
     const d = new Date();
     d.setDate(d.getDate() + i);
     return {
@@ -33,6 +33,7 @@ export default function GuestsPage() {
     const [isSuccess, setIsSuccess] = useState(false);
     const [guestEmail, setGuestEmail] = useState('');
     const [selectedBooking, setSelectedBooking] = useState<any>(null);
+    const [editingGuest, setEditingGuest] = useState<any>(null);
 
     const handleCreateReservation = (e: React.FormEvent) => {
         e.preventDefault();
@@ -72,9 +73,9 @@ export default function GuestsPage() {
                     <h2 className="text-lg font-bold text-zinc-900 flex items-center gap-2"><Calendar className="w-5 h-5" /> Booking Calendar</h2>
                 </div>
                 <div className="overflow-x-auto p-4">
-                    <div className="min-w-[800px]">
-                        <div className="grid grid-cols-[150px_repeat(7,1fr)] gap-2 mb-2">
-                            <div className="font-bold text-sm text-zinc-500 self-end pb-2">Room</div>
+                    <div className="min-w-[1200px]">
+                        <div className="grid grid-cols-[150px_repeat(14,1fr)] gap-2 mb-2">
+                            <div className="font-bold text-sm text-zinc-500 self-end pb-2 sticky left-0 bg-white">Room</div>
                             {calendarDays.map(d => (
                                 <div key={d.date} className="text-center font-bold text-sm text-zinc-700 bg-zinc-50 rounded-lg py-2 cursor-pointer hover:bg-zinc-100 transition-colors" onClick={() => setShowModal(true)}>
                                     <div className="text-xs text-zinc-400 font-medium">{d.day}</div>
@@ -83,9 +84,9 @@ export default function GuestsPage() {
                             ))}
                         </div>
                         {roomsForCalendar.map(room => (
-                            <div key={room.name} className="grid grid-cols-[150px_repeat(7,1fr)] gap-2 mb-2 items-center group relative">
-                                <div className="font-bold text-sm text-zinc-800">{room.name}</div>
-                                {Array.from({ length: 7 }, (_, i) => {
+                            <div key={room.name} className="grid grid-cols-[150px_repeat(14,1fr)] gap-2 mb-2 items-center group relative">
+                                <div className="font-bold text-sm text-zinc-800 sticky left-0 bg-white">{room.name}</div>
+                                {Array.from({ length: 14 }, (_, i) => {
                                     const booking = room.bookings.find(b => b.startOffset === i);
                                     if (booking) {
                                         return (
@@ -164,7 +165,7 @@ export default function GuestsPage() {
                                         </span>
                                     </td>
                                     <td className="px-6 py-5 text-right">
-                                        <button className="p-2 hover:bg-zinc-100 rounded-lg transition-colors text-zinc-400 hover:text-zinc-700">
+                                        <button onClick={() => setEditingGuest(guest)} className="p-2 hover:bg-zinc-100 rounded-lg transition-colors text-zinc-400 hover:text-zinc-700">
                                             <MoreHorizontal className="w-5 h-5" />
                                         </button>
                                     </td>
@@ -352,6 +353,60 @@ export default function GuestsPage() {
                             <button onClick={() => {
                                 alert('Changes to status have been securely saved.');
                                 setSelectedBooking(null);
+                            }} className="bg-zinc-900 hover:bg-zinc-800 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all shadow-md">Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Edit Guest Modal */}
+            {editingGuest && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-900/40 backdrop-blur-sm overflow-y-auto">
+                    <div className="bg-white rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] w-full max-w-lg overflow-hidden border border-zinc-200/50 my-8">
+                        <div className="p-6 border-b border-zinc-100 flex items-center justify-between bg-zinc-50/50">
+                            <h2 className="text-xl font-bold text-zinc-900">Edit Guest Details</h2>
+                            <button onClick={() => setEditingGuest(null)} className="text-zinc-400 hover:text-zinc-700 transition-colors p-1 hover:bg-zinc-100 rounded-lg focus:outline-none">
+                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div className="p-6 space-y-5">
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-bold text-zinc-700 mb-1.5">First Name</label>
+                                    <input type="text" defaultValue={editingGuest.name.split(' ')[0]} className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2.5 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 shadow-sm" />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-bold text-zinc-700 mb-1.5">Last Name</label>
+                                    <input type="text" defaultValue={editingGuest.name.split(' ')[1]} className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2.5 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 shadow-sm" />
+                                </div>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-bold text-zinc-700 mb-1.5">Email Address</label>
+                                <input type="email" defaultValue={editingGuest.email} className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2.5 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 shadow-sm" />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-bold text-zinc-700 mb-1.5">Phone Number</label>
+                                <input type="tel" defaultValue={editingGuest.phone} className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2.5 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 shadow-sm" />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-bold text-zinc-700 mb-1.5">VIP Status</label>
+                                <select defaultValue={editingGuest.status} className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2.5 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 shadow-sm font-medium">
+                                    <option value="Active">Active</option>
+                                    <option value="VIP">VIP</option>
+                                    <option value="Inactive">Inactive</option>
+                                    <option value="Banned">Banned</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className="p-6 bg-zinc-50 border-t border-zinc-100 flex items-center justify-end gap-3">
+                            <button onClick={() => setEditingGuest(null)} className="px-5 py-2.5 text-sm font-bold text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 rounded-xl transition-all">Cancel</button>
+                            <button onClick={() => {
+                                alert('Guest details updated successfully!');
+                                setEditingGuest(null);
                             }} className="bg-zinc-900 hover:bg-zinc-800 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all shadow-md">Save Changes</button>
                         </div>
                     </div>

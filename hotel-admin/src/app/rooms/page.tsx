@@ -13,6 +13,7 @@ const rooms = [
 
 export default function RoomsPage() {
     const [showModal, setShowModal] = useState(false);
+    const [editingRoom, setEditingRoom] = useState<any>(null);
 
     return (
         <div className="space-y-8 max-w-[1600px] mx-auto pb-10">
@@ -95,7 +96,7 @@ export default function RoomsPage() {
                                         </span>
                                     </td>
                                     <td className="px-6 py-5 text-right">
-                                        <button className="p-2 hover:bg-zinc-100 rounded-lg transition-colors text-zinc-400 hover:text-zinc-700">
+                                        <button onClick={() => setEditingRoom(room)} className="p-2 hover:bg-zinc-100 rounded-lg transition-colors text-zinc-400 hover:text-zinc-700">
                                             <MoreVertical className="w-5 h-5" />
                                         </button>
                                     </td>
@@ -158,6 +159,69 @@ export default function RoomsPage() {
                         <div className="p-6 bg-zinc-50 border-t border-zinc-100 flex items-center justify-end gap-3">
                             <button onClick={() => setShowModal(false)} className="px-5 py-2.5 text-sm font-bold text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 rounded-xl transition-all">Cancel</button>
                             <button onClick={() => setShowModal(false)} className="bg-zinc-900 hover:bg-zinc-800 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all shadow-md hover:shadow-lg">Add Room</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {/* Edit Room Modal */}
+            {editingRoom && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-900/40 backdrop-blur-sm">
+                    <div className="bg-white rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] w-full max-w-lg overflow-hidden border border-zinc-200/50">
+                        <div className="p-6 border-b border-zinc-100 flex items-center justify-between bg-zinc-50/50">
+                            <h2 className="text-xl font-bold text-zinc-900">Edit Room Details</h2>
+                            <button onClick={() => setEditingRoom(null)} className="text-zinc-400 hover:text-zinc-700 transition-colors p-1 hover:bg-zinc-100 rounded-lg">
+                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div className="p-6 space-y-5 max-h-[70vh] overflow-y-auto">
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-bold text-zinc-700 mb-1.5">Room Number</label>
+                                    <input type="text" defaultValue={editingRoom.id} className="w-full bg-slate-50 border border-zinc-200 rounded-xl px-3 py-2.5 text-sm font-mono text-zinc-500 shadow-sm" disabled />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-bold text-zinc-700 mb-1.5">Custom Display Name</label>
+                                    <input type="text" placeholder="e.g. The Royal Penthouse" className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2.5 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm" />
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-bold text-zinc-700 mb-1.5">Room Type</label>
+                                    <select defaultValue={editingRoom.type} className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2.5 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm">
+                                        <option>Standard Room</option>
+                                        <option>Deluxe Suite</option>
+                                        <option>Penthouse</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-bold text-zinc-700 mb-1.5">Base Price (£)</label>
+                                    <input type="number" defaultValue={editingRoom.price} className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2.5 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm" />
+                                </div>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-bold text-zinc-700 mb-1.5 flex items-center gap-2">Upload Room Photo</label>
+                                <input type="file" accept="image/*" className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-sm text-zinc-900 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition-all cursor-pointer shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20" />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-bold text-zinc-700 mb-2">Amenities</label>
+                                <div className="flex gap-3">
+                                    {['Wifi', 'Tv', 'Coffee'].map(amenity => (
+                                        <label key={amenity} className="flex items-center gap-2 text-sm font-medium text-zinc-600 bg-zinc-50 border border-zinc-200 px-3 py-1.5 rounded-lg cursor-pointer hover:bg-zinc-100 transition-colors">
+                                            <input type="checkbox" defaultChecked={editingRoom.amenities.includes(amenity)} className="rounded text-indigo-600 focus:ring-indigo-500" />
+                                            {amenity}
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="p-6 bg-zinc-50 border-t border-zinc-100 flex items-center justify-end gap-3">
+                            <button onClick={() => setEditingRoom(null)} className="px-5 py-2.5 text-sm font-bold text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 rounded-xl transition-all">Cancel</button>
+                            <button onClick={() => {
+                                alert('Room details and photos saved successfully.');
+                                setEditingRoom(null);
+                            }} className="bg-zinc-900 hover:bg-zinc-800 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all shadow-md hover:shadow-lg">Save Changes</button>
                         </div>
                     </div>
                 </div>

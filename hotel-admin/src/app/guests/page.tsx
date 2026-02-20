@@ -32,6 +32,7 @@ export default function GuestsPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [guestEmail, setGuestEmail] = useState('');
+    const [selectedBooking, setSelectedBooking] = useState<any>(null);
 
     const handleCreateReservation = (e: React.FormEvent) => {
         e.preventDefault();
@@ -88,7 +89,7 @@ export default function GuestsPage() {
                                     const booking = room.bookings.find(b => b.startOffset === i);
                                     if (booking) {
                                         return (
-                                            <div key={i} style={{ gridColumn: `span ${booking.length}` }} className={`relative h-10 rounded-xl px-3 flex items-center text-xs font-bold text-white shadow-sm cursor-pointer hover:opacity-90 transition-opacity ${booking.status === 'Confirmed' ? 'bg-emerald-500' : booking.status === 'VIP' ? 'bg-indigo-500' : 'bg-amber-500'}`}>
+                                            <div key={i} onClick={() => setSelectedBooking({ ...booking, room: room.name, paymentStatus: booking.status === 'Confirmed' || booking.status === 'VIP' ? 'Paid' : 'Pending', email: 'guest@example.com' })} style={{ gridColumn: `span ${booking.length}` }} className={`relative h-10 rounded-xl px-3 flex items-center text-xs font-bold text-white shadow-sm cursor-pointer hover:opacity-90 transition-opacity ${booking.status === 'Confirmed' ? 'bg-emerald-500' : booking.status === 'VIP' ? 'bg-indigo-500' : 'bg-amber-500'}`}>
                                                 {booking.guest} - {booking.status}
                                             </div>
                                         );
@@ -290,6 +291,69 @@ export default function GuestsPage() {
                                 </div>
                             </form>
                         )}
+                    </div>
+                </div>
+            )}
+
+            {/* Modal for Booking Details */}
+            {selectedBooking && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-900/40 backdrop-blur-sm overflow-y-auto">
+                    <div className="bg-white rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] w-full max-w-lg overflow-hidden border border-zinc-200/50 my-8">
+                        <div className="p-6 border-b border-zinc-100 flex items-center justify-between bg-zinc-50/50">
+                            <h2 className="text-xl font-bold text-zinc-900">Booking Details</h2>
+                            <button onClick={() => setSelectedBooking(null)} className="text-zinc-400 hover:text-zinc-700 transition-colors p-1 hover:bg-zinc-100 rounded-lg focus:outline-none">
+                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div className="p-6 space-y-6">
+                            <div>
+                                <h3 className="text-lg font-bold text-zinc-900">{selectedBooking.guest}</h3>
+                                <p className="text-sm text-zinc-500 font-medium">{selectedBooking.room} &bull; {selectedBooking.email}</p>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4 border-y border-zinc-100 py-4">
+                                <div>
+                                    <label className="block text-sm font-bold text-zinc-700 mb-1.5">Booking Status</label>
+                                    <select className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 shadow-sm font-medium" defaultValue={selectedBooking.status}>
+                                        <option>Confirmed</option>
+                                        <option>Pending</option>
+                                        <option>VIP</option>
+                                        <option>Cancelled</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-bold text-zinc-700 mb-1.5">Payment Status</label>
+                                    <select className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 shadow-sm font-medium" defaultValue={selectedBooking.paymentStatus}>
+                                        <option value="Paid">Paid</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Refunded">Refunded</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="space-y-3">
+                                <h4 className="text-sm font-bold text-zinc-900 mb-2">Quick Actions</h4>
+                                <button className="w-full bg-white border border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50 text-zinc-700 font-bold py-2.5 px-4 rounded-xl shadow-sm transition-all flex items-center justify-center gap-2 text-sm">
+                                    <Mail className="w-4 h-4 text-zinc-400" />
+                                    Resend Confirmation Email
+                                </button>
+                                <button className="w-full bg-white border border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50 text-zinc-700 font-bold py-2.5 px-4 rounded-xl shadow-sm transition-all flex items-center justify-center gap-2 text-sm">
+                                    <Mail className="w-4 h-4 text-zinc-400" />
+                                    Send Pending Payment Link
+                                </button>
+                            </div>
+
+                        </div>
+                        <div className="p-6 bg-zinc-50 border-t border-zinc-100 flex items-center justify-end gap-3">
+                            <button onClick={() => setSelectedBooking(null)} className="px-5 py-2.5 text-sm font-bold text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 rounded-xl transition-all">Cancel</button>
+                            <button onClick={() => {
+                                alert('Changes to status have been securely saved.');
+                                setSelectedBooking(null);
+                            }} className="bg-zinc-900 hover:bg-zinc-800 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all shadow-md">Save Changes</button>
+                        </div>
                     </div>
                 </div>
             )}

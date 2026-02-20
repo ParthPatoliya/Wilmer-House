@@ -1,0 +1,20 @@
+
+> hotel-admin@0.1.0 lint
+> eslint
+
+
+C:\Users\91953\Desktop\Wilmer-House\hotel-admin\src\app\cleaning\page.tsx
+  89:67  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\Users\91953\Desktop\Wilmer-House\hotel-admin\src\app\page.tsx
+  16:58  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  16:65  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\Users\91953\Desktop\Wilmer-House\hotel-admin\src\components\Header.tsx
+  36:25  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\91953\Desktop\Wilmer-House\hotel-admin\src\components\Sidebar.tsx
+  11:5  warning  'Settings' is defined but never used  @typescript-eslint/no-unused-vars
+
+✖ 5 problems (3 errors, 2 warnings)
+

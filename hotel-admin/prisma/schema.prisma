@@ -1,0 +1,135 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  role      String   @default("Staff") // Staff, Manager, Admin
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Guest {
+  id           String        @id @default(uuid())
+  firstName    String
+  lastName     String
+  email        String?       @unique
+  phone        String?       @unique
+  address      String?
+  vipStatus    String        @default("Active") // Active, VIP, Inactive
+  reservations Reservation[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Room {
+  id           String        @id @default(uuid())
+  number       String        @unique
+  type         String        // Standard, Suite, Penthouse
+  status       String        @default("Available") // Available, Occupied, Cleaning, Maintenance
+  pricePerNight Float
+  photoUrl     String?
+  reservations Reservation[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Reservation {
+  id            String   @id @default(uuid())
+  guestId       String
+  roomId        String
+  checkIn       DateTime
+  checkOut      DateTime
+  status        String   @default("Confirmed") // Confirmed, Pending, Checked In, Checked Out, Cancelled
+  totalAmount   Float
+  paymentStatus String   @default("Pending") // Pending, Paid, Refunded
+  
+  guest         Guest    @relation(fields: [guestId], references: [id])
+  room          Room     @relation(fields: [roomId], references: [id])
+  
+  adults        Int      @default(1)
+  children      Int      @default(0)
+
+  notes         String?
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Employee {
+  id             String   @id @default(uuid())
+  firstName      String
+  lastName       String
+  email          String?  @unique
+  phone          String?
+  address        String?
+  niNumber       String?  @unique
+  hourlyRate     Float?
+  employmentType String   @default("Full-time") // Full-time, Part-time
+  contractType   String   @default("Permanent") // Permanent, Contract
+  role           String   @default("Staff")
+  status         String   @default("Active") // Active, Inactive
+  shifts         Shift[]
+  timeLogs       TimeLog[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Shift {
+  id           String   @id @default(uuid())
+  employeeId   String
+  date         DateTime
+  startTime    String   // e.g. "09:00"
+  endTime      String   // e.g. "17:00"
+  breakStartTime String?
+  breakEndTime   String?
+  breakMinutes Int      @default(0)
+  status       String   @default("Scheduled") // Scheduled, Completed, Cancelled
+  notes        String?
+  
+  employee     Employee @relation(fields: [employeeId], references: [id])
+  
+  updatedAt    DateTime @updatedAt
+}
+
+model HotelProfile {
+  id        String   @id @default(uuid())
+  name      String   @default("Wilmer House Hotel")
+  email     String   @default("info@wilmerhouse.com")
+  phone     String   @default("+44 7700 900000")
+  address   String   @default("123 Hotel Lane, London")
+  taxId     String?
+  updatedAt DateTime @updatedAt
+}
+
+model EmailTemplate {
+  id        String   @id @default(uuid())
+  type      String   @unique // e.g. "Reservation", "Payment", "Welcome"
+  subject   String
+  body      String   // Storing HTML or text body with placeholders like {{name}}
+  updatedAt DateTime @updatedAt
+}
+
+model TimeLog {
+  id         String   @id @default(uuid())
+  employeeId String
+  clockIn    DateTime @default(now())
+  clockOut   DateTime?
+  status     String   @default("Active") // Active, Completed
+  notes      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  employee   Employee @relation(fields: [employeeId], references: [id])
+}
+

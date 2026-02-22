@@ -13,9 +13,10 @@ import {
 
 const navItems = [
     { name: 'Dashboard', href: '/', icon: LayoutDashboard },
-    { name: 'Guest & Reservations', href: '/guests', icon: CalendarDays },
+    { name: 'Guest Directory', href: '/guests', icon: Users },
+    { name: 'Reservations', href: '/reservations', icon: CalendarDays },
     { name: 'Room Details', href: '/rooms', icon: BedDouble },
-    { name: 'Staff Management', href: '/staff', icon: Users },
+    { name: 'Rota & Shifts', href: '/rota', icon: Users },
     { name: 'Stock Management', href: '/inventory', icon: Package },
 ];
 

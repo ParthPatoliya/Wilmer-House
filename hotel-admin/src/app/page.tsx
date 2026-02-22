@@ -91,7 +91,7 @@ export default async function Home() {
                     <td colSpan={4} className="px-6 py-8 text-center text-zinc-500 font-medium">No recent bookings found.</td>
                   </tr>
                 ) : (
-                  recentBookings.map((row) => (
+                  recentBookings.map((row: any) => (
                     <tr key={row.id} className="border-b border-zinc-100/50 last:border-0 hover:bg-zinc-50/80 transition-colors group">
                       <td className="px-6 py-5">
                         <div className="flex items-center gap-3">

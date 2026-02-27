@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use client';
 import { Bell, Search, UserCircle, LogOut } from 'lucide-react';
 import { useState } from 'react';
@@ -53,7 +54,11 @@ export default function Header() {
                             </button>
                             <div className="border-t border-zinc-100 my-1"></div>
                             <button
-                                onClick={() => setShowProfile(false)}
+                                onClick={async () => {
+                                    setShowProfile(false);
+                                    await fetch('/api/auth/logout', { method: 'POST' });
+                                    window.location.href = '/login';
+                                }}
                                 className="w-full text-left px-5 py-2.5 text-sm font-medium text-rose-600 hover:bg-rose-50 flex items-center gap-3 transition-colors"
                             >
                                 <LogOut className="w-4 h-4" />

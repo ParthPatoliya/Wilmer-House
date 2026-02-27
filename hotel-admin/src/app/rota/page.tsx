@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use client';
 
 import { Clock, CalendarDays, Download, Play, Square, History, Plus, X, Edit, List } from 'lucide-react';

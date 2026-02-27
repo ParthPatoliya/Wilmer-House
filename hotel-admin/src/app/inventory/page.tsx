@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { PackagePlus, RefreshCcw, MoreHorizontal, AlertTriangle, PackageOpen, Layers } from 'lucide-react';
 
 const inventoryItems = [

@@ -22,8 +22,8 @@ export default function GuestsPage() {
     const [showBlockModal, setShowBlockModal] = useState(false);
     const [blockForm, setBlockForm] = useState({ checkIn: '', checkOut: '', roomId: '', notes: '' });
 
-    const [selectedBooking, setSelectedBooking] = useState<any>(null);
-    const [editingGuest, setEditingGuest] = useState<any>(null);
+    const [selectedBooking, setSelectedBooking] = useState<{ [key: string]: string | number | boolean } | null>(null);
+    const [editingGuest, setEditingGuest] = useState<{ [key: string]: string | number | boolean } | null>(null);
 
     const [startYear, setStartYear] = useState(new Date().getFullYear());
     const [startMonth, setStartMonth] = useState(new Date().getMonth());
@@ -253,11 +253,12 @@ export default function GuestsPage() {
                             ))}
                         </div>
                         <div onMouseUp={handleMouseUp} onMouseLeave={() => { if (isDragging) handleMouseUp(); }}>
-                            {roomsForCalendar.map(room => (
-                                <div key={room.name} className="grid gap-2 mb-2 items-center group relative select-none" style={{ gridTemplateColumns: `150px repeat(${daysInMonth}, minmax(40px, 1fr))` }}>
+                            {roomsForCalendar.map((room, index) => (
+                                <div key={`room-${room.name}`} className="grid gap-2 mb-2 items-center group relative select-none" style={{ gridTemplateColumns: `150px repeat(${daysInMonth}, minmax(40px, 1fr))` }}>
                                     <div className="font-bold text-sm text-zinc-800 sticky left-0 bg-white shadow-sm pr-2">{room.name}</div>
                                     {Array.from({ length: daysInMonth }, (_, i) => {
-                                        const booking = room.bookings.find((b: any) => b.startOffset === i);
+                                        // This tells TypeScript "Trust me, this is an array"
+                                        const booking = (room.bookings as any[]).find((b: any) => b.startOffset === i);
                                         if (booking) {
                                             return (
                                                 <div key={i} onClick={(e) => { e.stopPropagation(); setSelectedBooking({ ...booking, room: room.name }); }} style={{ gridColumn: `span ${booking.length}` }} className={`relative h-10 rounded-xl px-3 flex items-center text-[10px] md:text-xs font-bold text-white shadow-sm cursor-pointer hover:opacity-90 transition-opacity truncate shrink-0 ${booking.status === 'Confirmed' ? 'bg-emerald-500' : booking.status === 'VIP' ? 'bg-indigo-500' : booking.status === 'Blocked' ? 'bg-rose-900 border-2 border-dashed border-rose-300' : 'bg-amber-500'}`}>
@@ -480,7 +481,7 @@ export default function GuestsPage() {
                             <div className="grid grid-cols-2 gap-4 border-y border-zinc-100 py-4">
                                 <div>
                                     <label className="block text-sm font-bold text-zinc-700 mb-1.5">Booking Status</label>
-                                    <select value={selectedBooking.status} onChange={(e) => setSelectedBooking({ ...selectedBooking, status: e.target.value })} className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 shadow-sm font-medium">
+                                    <select value={selectedBooking.status as string} onChange={(e) => setSelectedBooking({ ...selectedBooking, status: e.target.value })} className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 shadow-sm font-medium">
                                         <option>Confirmed</option>
                                         <option>Pending</option>
                                         <option>Checked In</option>
@@ -492,7 +493,7 @@ export default function GuestsPage() {
                                 {selectedBooking.status !== 'Blocked' && (
                                     <div>
                                         <label className="block text-sm font-bold text-zinc-700 mb-1.5">Payment Status</label>
-                                        <select value={selectedBooking.paymentStatus} onChange={(e) => setSelectedBooking({ ...selectedBooking, paymentStatus: e.target.value })} className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 shadow-sm font-medium">
+                                        <select value={selectedBooking.paymentStatus as string} onChange={(e) => setSelectedBooking({ ...selectedBooking, paymentStatus: e.target.value })} className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 shadow-sm font-medium">
                                             <option>Pending</option>
                                             <option>Paid - Card</option>
                                             <option>Paid - Cash</option>
@@ -508,7 +509,7 @@ export default function GuestsPage() {
                                     <label className="block text-sm font-bold text-zinc-700 mb-1.5">Blocking Reason / Notes</label>
                                     <textarea
                                         readOnly
-                                        value={selectedBooking.notes || 'No reason provided.'}
+                                        value={(selectedBooking.notes as string) || 'No reason provided.'}
                                         className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 text-sm text-zinc-700 focus:outline-none shadow-sm min-h-[80px]"
                                     ></textarea>
                                 </div>

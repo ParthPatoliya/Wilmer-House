@@ -1,0 +1,81 @@
+﻿node.exe : npm warn Unknown user config 
+"msvs_version". This will stop working in 
+the next major version of npm.
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" 
+"C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified 
+   : (npm warn Unknow...version of npm.:S  
+  tring) [], RemoteException
+    + FullyQualifiedErrorId : NativeComman 
+   dError
+ 
+⚠ Warning: Next.js inferred your workspace 
+root, but it may not be correct.
+ We detected multiple lockfiles and 
+selected the directory of 
+C:\Users\91953\package-lock.json as the 
+root directory.
+ To silence this warning, set 
+`turbopack.root` in your Next.js config, 
+or consider removing one of the lockfiles 
+if it's not needed.
+   See https://nextjs.org/docs/app/api-refe
+rence/config/next-config-js/turbopack#root-
+directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\91953\Desktop\Wilmer-House\ho
+tel-admin\package-lock.json
+
+▲ Next.js 16.1.6 (Turbopack)
+- Environments: .env.local, .env
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 9.2s
+  Running TypeScript ...
+Failed to compile.
+
+./src/app/calendar/page.tsx:25:106
+Type error: Argument of type 'null' is not 
+assignable to parameter of type '{ [key: 
+string]: string | number | boolean; } | 
+(() => { [key: string]: string | number | 
+boolean; })'.
+
+[0m [90m 23 |[39m     [36mconst[39m 
+[blockForm[33m,[39m setBlockForm] 
+[33m=[39m useState({ checkIn[33m:[39m 
+[32m''[39m[33m,[39m 
+checkOut[33m:[39m 
+[32m''[39m[33m,[39m roomId[33m:[39m 
+[32m''[39m[33m,[39m notes[33m:[39m 
+[32m''[39m })[33m;[39m
+ [90m 24 |[39m
+[31m[1m>[22m[39m[90m 25 |[39m     
+[36mconst[39m 
+[selectedBooking[33m,[39m 
+setSelectedBooking] [33m=[39m 
+useState[33m<[39m{ [key[33m:[39m 
+string][33m:[39m string [33m|[39m 
+number [33m|[39m boolean 
+}[33m>[39m([36mnull[39m)[33m;[39m
+ [90m    |[39m                           
+                                           
+                                    
+[31m[1m^[22m[39m
+ [90m 26 |[39m     [36mconst[39m 
+[editingGuest[33m,[39m setEditingGuest] 
+[33m=[39m useState[33m<[39m{ 
+[key[33m:[39m string][33m:[39m string 
+[33m|[39m number [33m|[39m boolean 
+}[33m>[39m([36mnull[39m)[33m;[39m
+ [90m 27 |[39m
+ [90m 28 |[39m     [36mconst[39m 
+[startYear[33m,[39m setStartYear] 
+[33m=[39m useState([36mnew[39m [33mDat
+e[39m()[33m.[39mgetFullYear())[33m;[39
+m[0m
+Next.js build worker exited with code: 1 
+and signal: null

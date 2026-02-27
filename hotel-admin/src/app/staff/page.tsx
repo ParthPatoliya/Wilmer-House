@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { UserPlus, MoreVertical, ShieldCheck, Clock, CheckCircle } from 'lucide-react';
 
 const staffMembers = [

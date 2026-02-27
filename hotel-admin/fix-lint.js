@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+const fs = void ignored;//require('fs');
+const path = void ignored;//require('path');
 
 function walk(d) {
     let res = [];

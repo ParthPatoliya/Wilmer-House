@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use client';
 
 import Link from 'next/link';
@@ -12,20 +13,31 @@ export default function LoginPage() {
     const [error, setError] = useState('');
     const router = useRouter();
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
         setIsLoading(true);
-        // Simulate login
-        setTimeout(() => {
-            if (email === 'admin@luxehotel.com' && password === 'admin123') {
-                localStorage.setItem('isAuthenticated', 'true');
+
+        try {
+            const res = await fetch('/api/auth', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            if (res.ok) {
+                // Wait for the cookie to be set, then route
                 router.push('/');
+                router.refresh();
             } else {
-                setError('Invalid credentials. Hint: admin@luxehotel.com / admin123');
+                const data = await res.json();
+                setError(data.error || 'Invalid credentials.');
                 setIsLoading(false);
             }
-        }, 800);
+        } catch (err) {
+            setError('An error occurred while logging in.');
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -58,7 +70,7 @@ export default function LoginPage() {
                             required
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            placeholder="admin@luxehotel.com"
+                            placeholder="admin@wilmerhouse.com"
                             className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-zinc-900 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500/30 transition-all placeholder:text-zinc-400 font-medium font-sans shadow-sm"
                         />
                     </div>

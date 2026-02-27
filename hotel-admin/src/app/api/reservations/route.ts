@@ -2,7 +2,9 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { sendReservationEmail } from '@/lib/email';
 
-export async function GET() {
+export const dynamic = 'force-dynamic';
+
+export async function GET(req: Request) {
     try {
         const reservations = await prisma.reservation.findMany({
             include: { guest: true, room: true },
@@ -94,13 +96,15 @@ export async function POST(req: Request) {
 export async function PUT(req: Request) {
     try {
         const data = await req.json();
+
+        const updateData: any = { ...data };
+        delete updateData.id;
+        if (data.checkIn) updateData.checkIn = new Date(data.checkIn);
+        if (data.checkOut) updateData.checkOut = new Date(data.checkOut);
+
         const res = await prisma.reservation.update({
             where: { id: data.id },
-            data: {
-                status: data.status,
-                paymentStatus: data.paymentStatus,
-                notes: data.notes !== undefined ? data.notes : undefined
-            }
+            data: updateData
         });
         return NextResponse.json(res);
     } catch (error: any) {

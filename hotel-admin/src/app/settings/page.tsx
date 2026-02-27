@@ -4,7 +4,7 @@ import { Settings2, Palette, Users, Mail, Save } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 export default function SettingsPage() {
-    const [templates, setTemplates] = useState<any[]>([]);
+    const [templates, setTemplates] = useState<{ [key: string]: string | number | boolean }[]>([]);
     const [selectedType, setSelectedType] = useState('Reservation');
     const [editorData, setEditorData] = useState({ subject: '', body: '' });
     const [isLoading, setIsLoading] = useState(true);
@@ -20,7 +20,7 @@ export default function SettingsPage() {
             const data = await res.json();
             setTemplates(data);
             const active = data.find((d: any) => d.type === selectedType) || data[0];
-            if (active) setEditorData({ subject: active.subject, body: active.body });
+            if (active) setEditorData({ subject: String(active.subject || ''), body: String(active.body || '') });
         }
         setIsLoading(false);
     };
@@ -28,7 +28,7 @@ export default function SettingsPage() {
     const handleTypeChange = (type: string) => {
         setSelectedType(type);
         const active = templates.find((d: any) => d.type === type);
-        if (active) setEditorData({ subject: active.subject, body: active.body });
+        if (active) setEditorData({ subject: String(active.subject || ''), body: String(active.body || '') });
     };
 
     const saveTemplate = async () => {

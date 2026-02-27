@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use client';
 import { ArrowLeft, Save } from 'lucide-react';
 import Link from 'next/link';

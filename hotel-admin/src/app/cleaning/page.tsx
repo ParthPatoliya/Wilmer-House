@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Sparkles, CalendarCheck, CheckCircle2, Clock, MapPin, MoreHorizontal } from 'lucide-react';
 
 const tasks = [

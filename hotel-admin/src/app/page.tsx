@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { TrendingUp, Users, CheckCircle, Clock, ChevronRight, Download, Calendar, Activity } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';

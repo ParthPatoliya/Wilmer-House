@@ -57,7 +57,7 @@ export async function POST(req: Request) {
             maxAge: 60 * 60 * 2 // 2 hours context
         });
         return response;
-    } catch (error) {
-        return NextResponse.json({ error: 'Failed to authenticate' }, { status: 500 });
+    } catch (error: any) {
+        return NextResponse.json({ error: 'Failed to authenticate', details: error.message }, { status: 500 });
     }
 }
